@@ -189,8 +189,7 @@ def p60swarp(image, outfile, ractr=None, dcctr=None, pixscale=None, size=None,
 def p60sdsssub(inlis, refimage, ot, distortdeg=1, scthresh1=3.0, 
                scthresh2=10.0, tu=50000, iu=50000, ig=2.3, tg=1.0, 
                stamps=None, nsx=4, nsy=4, ko=0, bgo=0, radius=10, 
-               tlow=None, ilow=None, sthresh=5.0, ng=None, aperture=10.0,
-               distfile=P60DISTORT):
+               tlow=None, ilow=None, sthresh=5.0, ng=None, aperture=10.0):
 
     '''P60 Subtraction using SDSS image as reference'''
 
@@ -304,126 +303,98 @@ def p60scamp(inlis, refimage=None, distortdeg=3, scthresh1=5.0,
     f1.close()
     
     f2 = open("default.nnw", "w")
-    nnw = """NNW
-
-# Neural Network Weights for the SExtractor star/galaxy classifier (V1.3)
-# inputs:       9 for profile parameters + 1 for seeing.
-# outputs:      ``Stellarity index'' (0.0 to 1.0)
-# Seeing FWHM range: from 0.025 to 5.5'' (images must have 1.5 < FWHM < 5 pixels)
-# Optimized for Moffat profiles with 2<= beta <= 4.
-
- 3 10 10  1
-
--1.56604e+00 -2.48265e+00 -1.44564e+00 -1.24675e+00 -9.44913e-01 -5.22453e-01  4.61342e-02  8.31957e-01  2.15505e+00  2.64769e-01
- 3.03477e+00  2.69561e+00  3.16188e+00  3.34497e+00  3.51885e+00  3.65570e+00  3.74856e+00  3.84541e+00  4.22811e+00  3.27734e+00
- 
--3.22480e-01 -2.12804e+00  6.50750e-01 -1.11242e+00 -1.40683e+00 -1.55944e+00 -1.84558e+00 -1.18946e-01  5.52395e-01 -4.36564e-01 -5.30052e+00
- 4.62594e-01 -3.29127e+00  1.10950e+00 -6.01857e-01  1.29492e-01  1.42290e+00  2.90741e+00  2.44058e+00 -9.19118e-01  8.42851e-01 -4.69824e+00
--2.57424e+00  8.96469e-01  8.34775e-01  2.18845e+00  2.46526e+00  8.60878e-02 -6.88080e-01 -1.33623e-02  9.30403e-02  1.64942e+00 -1.01231e+00
- 4.81041e+00  1.53747e+00 -1.12216e+00 -3.16008e+00 -1.67404e+00 -1.75767e+00 -1.29310e+00  5.59549e-01  8.08468e-01 -1.01592e-02 -7.54052e+00
- 1.01933e+01 -2.09484e+01 -1.07426e+00  9.87912e-01  6.05210e-01 -6.04535e-02 -5.87826e-01 -7.94117e-01 -4.89190e-01 -8.12710e-02 -2.07067e+01
--5.31793e+00  7.94240e+00 -4.64165e+00 -4.37436e+00 -1.55417e+00  7.54368e-01  1.09608e+00  1.45967e+00  1.62946e+00 -1.01301e+00  1.13514e-01
- 2.20336e-01  1.70056e+00 -5.20105e-01 -4.28330e-01  1.57258e-03 -3.36502e-01 -8.18568e-02 -7.16163e+00  8.23195e+00 -1.71561e-02 -1.13749e+01
- 3.75075e+00  7.25399e+00 -1.75325e+00 -2.68814e+00 -3.71128e+00 -4.62933e+00 -2.13747e+00 -1.89186e-01  1.29122e+00 -7.49380e-01  6.71712e-01
--8.41923e-01  4.64997e+00  5.65808e-01 -3.08277e-01 -1.01687e+00  1.73127e-01 -8.92130e-01  1.89044e+00 -2.75543e-01 -7.72828e-01  5.36745e-01
--3.65598e+00  7.56997e+00 -3.76373e+00 -1.74542e+00 -1.37540e-01 -5.55400e-01 -1.59195e-01  1.27910e-01  1.91906e+00  1.42119e+00 -4.35502e+00
-
--1.70059e+00 -3.65695e+00  1.22367e+00 -5.74367e-01 -3.29571e+00  2.46316e+00  5.22353e+00  2.42038e+00  1.22919e+00 -9.22250e-01 -2.32028e+00
-
-
- 0.00000e+00
- 1.00000e+00"""
-
-	f2.write(nnw)
-	f2.close()
+    f2.write("NNW\n\n")
+    f2.write("# Neural Network Weights for the SExtractor star/galaxy classifier (V1.3)\n")
+    f2.write("# inputs:       9 for profile parameters + 1 for seeing.\n")
+    f2.write("# outputs:      ``Stellarity index'' (0.0 to 1.0)\n")
+    f2.write("# Seeing FWHM range: from 0.025 to 5.5'' (images must have 1.5 < FWHM < 5 pixels)\n")
+    f2.write("# Optimized for Moffat profiles with 2<= beta <= 4.\n\n")
+    f2.write(" 3 10 10  1\n\n")
+    f2.write("-1.56604e+00 -2.48265e+00 -1.44564e+00 -1.24675e+00 -9.44913e-01 -5.22453e-01  4.61342e-02  8.31957e-01  2.15505e+00  2.64769e-01\n")
+    f2.write(" 3.03477e+00  2.69561e+00  3.16188e+00  3.34497e+00  3.51885e+00  3.65570e+00  3.74856e+00  3.84541e+00  4.22811e+00  3.27734e+00\n\n")
+    f2.write("-3.22480e-01 -2.12804e+00  6.50750e-01 -1.11242e+00 -1.40683e+00 -1.55944e+00 -1.84558e+00 -1.18946e-01  5.52395e-01 -4.36564e-01 -5.30052e+00\n")
+    f2.write(" 4.62594e-01 -3.29127e+00  1.10950e+00 -6.01857e-01  1.29492e-01  1.42290e+00  2.90741e+00  2.44058e+00 -9.19118e-01  8.42851e-01 -4.69824e+00\n")
+    f2.write("-2.57424e+00  8.96469e-01  8.34775e-01  2.18845e+00  2.46526e+00  8.60878e-02 -6.88080e-01 -1.33623e-02  9.30403e-02  1.64942e+00 -1.01231e+00\n")
+    f2.write(" 4.81041e+00  1.53747e+00 -1.12216e+00 -3.16008e+00 -1.67404e+00 -1.75767e+00 -1.29310e+00  5.59549e-01  8.08468e-01 -1.01592e-02 -7.54052e+00\n")
+    f2.write(" 1.01933e+01 -2.09484e+01 -1.07426e+00  9.87912e-01  6.05210e-01 -6.04535e-02 -5.87826e-01 -7.94117e-01 -4.89190e-01 -8.12710e-02 -2.07067e+01\n")
+    f2.write("-5.31793e+00  7.94240e+00 -4.64165e+00 -4.37436e+00 -1.55417e+00  7.54368e-01  1.09608e+00  1.45967e+00  1.62946e+00 -1.01301e+00  1.13514e-01\n")
+    f2.write(" 2.20336e-01  1.70056e+00 -5.20105e-01 -4.28330e-01  1.57258e-03 -3.36502e-01 -8.18568e-02 -7.16163e+00  8.23195e+00 -1.71561e-02 -1.13749e+01\n")
+    f2.write(" 3.75075e+00  7.25399e+00 -1.75325e+00 -2.68814e+00 -3.71128e+00 -4.62933e+00 -2.13747e+00 -1.89186e-01  1.29122e+00 -7.49380e-01  6.71712e-01\n")
+    f2.write("-8.41923e-01  4.64997e+00  5.65808e-01 -3.08277e-01 -1.01687e+00  1.73127e-01 -8.92130e-01  1.89044e+00 -2.75543e-01 -7.72828e-01  5.36745e-01\n")
+    f2.write("-3.65598e+00  7.56997e+00 -3.76373e+00 -1.74542e+00 -1.37540e-01 -5.55400e-01 -1.59195e-01  1.27910e-01  1.91906e+00  1.42119e+00 -4.35502e+00\n\n")
+    f2.write("-1.70059e+00 -3.65695e+00  1.22367e+00 -5.74367e-01 -3.29571e+00  2.46316e+00  5.22353e+00  2.42038e+00  1.22919e+00 -9.22250e-01 -2.32028e+00\n\n\n")
+    f2.write(" 0.00000e+00\n")
+    f2.write(" 1.00000e+00\n")
+    f2.close()
     
-	f3.open("default.conv", "w")
-	f3.write("CONV NORM\n")
-	f3.write("# 3x3 convolution mask of a gaussian PSF with FWHM = 2.0 pixels.\n")
-	f3.write("0.260856 0.483068 0.260856\n")
-	f3.write("0.483068 0.894573 0.483068\n")
-	f3.write("0.260856 0.483068 0.260856\n")
-	f3.close()
-	
-	f4.open("default.sex", "w")
-	sx = """# Default configuration file for SExtractor V1.2
-# EB 18/08/97
-# (*) indicates parameters which can be omitted from this config file.
-
-#-------------------------------- Catalog ------------------------------------
-
-CATALOG_NAME    test.cat        # name of the output catalog
-CATALOG_TYPE    FITS_LDAC       # "ASCII_HEAD","ASCII","FITS_1.0" or "FITS_LDAC"
-
-PARAMETERS_NAME daofind.param   # name of the file containing catalog contents
-
-#------------------------------- Extraction ----------------------------------
-
-DETECT_TYPE     CCD             # "CCD" or "PHOTO" (*)
-DETECT_MINAREA  10              # minimum number of pixels above threshold
-DETECT_THRESH   2.              # <sigmas> or <threshold>,<ZP> in mag.arcsec-2
-ANALYSIS_THRESH 2.              # <sigmas> or <threshold>,<ZP> in mag.arcsec-2
-
-FILTER          Y               # apply filter for detection ("Y" or "N")?
-FILTER_NAME     default.conv    # name of the file containing the filter
-
-DEBLEND_NTHRESH 32              # Number of deblending sub-thresholds
-DEBLEND_MINCONT 0.005           # Minimum contrast parameter for deblending
-
-CLEAN           Y               # Clean spurious detections? (Y or N)?
-CLEAN_PARAM     1.0             # Cleaning efficiency
-
-MASK_TYPE       CORRECT         # type of detection MASKing; can be one of
-                                # NONE, BLANK, or CORRECT
-
-#------------------------------ Photometry -----------------------------------
-
-PHOT_APERTURES  7               # MAG_APER aperture diameter(s) in pixels
-PHOT_AUTOPARAMS 2.5, 3.5        # MAG_AUTO parameters: <Kron_fact>,<min_radius>
-
-SATUR_LEVEL     50000.0         # level (in ADUs) at which arises saturation
-
-MAG_ZEROPOINT   0.0             # magnitude zero-point
-MAG_GAMMA       4.0             # gamma of emulsion (for photographic scans)
-GAIN            2.3             # detector gain in e-/ADU.
-PIXEL_SCALE     0               # size of pixel in arcsec (0=use FITS WCS info).
-
-#------------------------- Star/Galaxy Separation ----------------------------
-
-SEEING_FWHM     2.0             # stellar FWHM in arcsec
-STARNNW_NAME    default.nnw     # Neural-Network_Weight table filename
-
-#------------------------------ Background -----------------------------------
-
-BACK_SIZE       64              # Background mesh: <size> or <width>,<height>
-BACK_FILTERSIZE 3               # Background filter: <size> or <width>,<height>
-
-BACKPHOTO_TYPE  GLOBAL          # can be "GLOBAL" or "LOCAL" (*)
-
-#------------------------------ Check Image ----------------------------------
-
-CHECKIMAGE_TYPE NONE            # can be one of "NONE", "BACKGROUND",
-                                # "MINIBACKGROUND", "-BACKGROUND", "OBJECTS",
-                                # "-OBJECTS", "SEGMENTATION", "APERTURES",
-                                # or "FILTERED" (*)
-CHECKIMAGE_NAME check.fits      # Filename for the check-image (*)
-
-#--------------------- Memory (change with caution!) -------------------------
-
-MEMORY_OBJSTACK 3000            # number of objects in stack
-MEMORY_PIXSTACK 300000          # number of pixels in stack
-MEMORY_BUFSIZE  1024            # number of lines in buffer
-
-#----------------------------- Miscellaneous ---------------------------------
-
-VERBOSE_TYPE    NORMAL          # can be "QUIET", "NORMAL" or "FULL" (*)
-
-#------------------------------- New Stuff -----------------------------------
-
-# Surprise!!"""
-	    
-	f4.write(nnw)
-	f4.close()
+    f3 = open("default.conv", "w")
+    f3.write("CONV NORM\n")
+    f3.write("# 3x3 convolution mask of a gaussian PSF with FWHM = 2.0 pixels.\n")
+    f3.write("0.260856 0.483068 0.260856\n")
+    f3.write("0.483068 0.894573 0.483068\n")
+    f3.write("0.260856 0.483068 0.260856\n")
+    f3.close()
+    
+    f4 = open("default.sex", "w")
+    f4.write("# Default configuration file for SExtractor V1.2\n")
+    f4.write("# EB 18/08/97\n")
+    f4.write("# (*) indicates parameters which can be omitted from this config file.\n\n")
+    
+    f4.write("#-------------------------------- Catalog ------------------------------------\n\n")
+    f4.write("CATALOG_NAME    test.cat        # name of the output catalog\n")
+    f4.write('CATALOG_TYPE    FITS_LDAC       # "ASCII_HEAD","ASCII","FITS_1.0" or "FITS_LDAC"\n\n')
+    f4.write("PARAMETERS_NAME daofind.param   # name of the file containing catalog contents\n\n")
+    
+    f4.write("#------------------------------- Extraction ----------------------------------\n\n")
+    f4.write('DETECT_TYPE     CCD             # "CCD" or "PHOTO" (*)\n')
+    f4.write('DETECT_MINAREA  10              # minimum number of pixels above threshold\n')
+    f4.write('DETECT_THRESH   2.              # <sigmas> or <threshold>,<ZP> in mag.arcsec-2\n')
+    f4.write('ANALYSIS_THRESH 2.              # <sigmas> or <threshold>,<ZP> in mag.arcsec-2\n\n')
+    f4.write('FILTER          Y               # apply filter for detection ("Y" or "N")?\n')
+    f4.write('FILTER_NAME     default.conv    # name of the file containing the filter\n\n')
+    f4.write('DEBLEND_NTHRESH 32              # Number of deblending sub-thresholds\n')
+    f4.write('DEBLEND_MINCONT 0.005           # Minimum contrast parameter for deblending\n\n')
+    f4.write('CLEAN           Y               # Clean spurious detections? (Y or N)?\n')
+    f4.write('CLEAN_PARAM     1.0             # Cleaning efficiency\n\n')
+    f4.write('MASK_TYPE       CORRECT         # type of detection MASKing; can be one of\n')
+    f4.write('                                # NONE, BLANK, or CORRECT\n\n')
+    
+    f4.write('#------------------------------ Photometry -----------------------------------\n\n')
+    f4.write('PHOT_APERTURES  7               # MAG_APER aperture diameter(s) in pixels\n')
+    f4.write('PHOT_AUTOPARAMS 2.5, 3.5        # MAG_AUTO parameters: <Kron_fact>,<min_radius>\n\n')
+    f4.write('SATUR_LEVEL     50000.0         # level (in ADUs) at which arises saturation\n\n')
+    f4.write('MAG_ZEROPOINT   0.0             # magnitude zero-point\n')
+    f4.write('MAG_GAMMA       4.0             # gamma of emulsion (for photographic scans)\n')
+    f4.write('GAIN            2.3             # detector gain in e-/ADU.\n')
+    f4.write('PIXEL_SCALE     0               # size of pixel in arcsec (0=use FITS WCS info).\n\n')
+    
+    f4.write('#------------------------- Star/Galaxy Separation ----------------------------\n\n')
+    f4.write('SEEING_FWHM     2.0             # stellar FWHM in arcsec\n')
+    f4.write('STARNNW_NAME    default.nnw     # Neural-Network_Weight table filename\n\n')
+    
+    f4.write('#------------------------------ Background -----------------------------------\n\n')
+    f4.write('BACK_SIZE       64              # Background mesh: <size> or <width>,<height>\n')
+    f4.write('BACK_FILTERSIZE 3               # Background filter: <size> or <width>,<height>\n\n')
+    f4.write('BACKPHOTO_TYPE  GLOBAL          # can be "GLOBAL" or "LOCAL" (*)\n\n')
+    
+    f4.write('#------------------------------ Check Image ----------------------------------\n\n')
+    f4.write('CHECKIMAGE_TYPE NONE            # can be one of "NONE", "BACKGROUND",\n')
+    f4.write('                                # "MINIBACKGROUND", "-BACKGROUND", "OBJECTS",\n')
+    f4.write('                                # "-OBJECTS", "SEGMENTATION", "APERTURES",\n')
+    f4.write('                                # or "FILTERED" (*)\n')
+    f4.write('CHECKIMAGE_NAME check.fits      # Filename for the check-image (*)\n\n')
+    
+    f4.write('#--------------------- Memory (change with caution!) -------------------------\n\n')
+    f4.write('MEMORY_OBJSTACK 3000            # number of objects in stack\n')
+    f4.write('MEMORY_PIXSTACK 300000          # number of pixels in stack\n')
+    f4.write('MEMORY_BUFSIZE  1024            # number of lines in buffer\n\n')
+    
+    f4.write('#----------------------------- Miscellaneous ---------------------------------\n\n')
+    f4.write('VERBOSE_TYPE    NORMAL          # can be "QUIET", "NORMAL" or "FULL" (*)\n\n')
+    
+    f4.write('#------------------------------- New Stuff -----------------------------------\n\n')
+    f4.write('# Surprise!!')
+    f4.close()
 
     # Create WCS catalog from reference image (if necessary)
     if not (refimage==None):
